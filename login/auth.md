@@ -18,6 +18,26 @@
 |--------------|-----------------------------------|----------|------|
 | Content-Type | application/x-www-form-urlencoded | YES      |      |
 
+**Body:**
+
+| name   | type    | desc  |
+|--------|---------|-------|
+| param1 | string  | 参数1   |
+| param2 | string  | 参数2   |
+| param3 | boolean | 参数3   |
+| ...    | Object  | 参数... |
+
+**请求示例:**
+
+```
+{
+  "param1": "",
+  "param2": "",
+  "param3": false,
+  "...": ...
+}
+```
+
 > 响应
 
 **Headers:**
