@@ -1,0 +1,278 @@
+import lombok.Data;
+import java.io.Serializable;
+
+@Data
+public class ADTORequest implements Serializable {
+}
+
+import lombok.Data;
+import java.io.Serializable;
+
+@Data
+public class ADTOResponse implements Serializable {
+}
+
+import lombok.Data;
+
+import java.io.Serializable;
+
+@Data
+public class BDTORequest implements Serializable {
+}
+
+import lombok.Data;
+
+import java.io.Serializable;
+
+@Data
+public class BDTOResponse implements Serializable {
+}
+
+@Data
+public class CDTORequest implements Serializable {
+}
+
+@Data
+public class CDTOResponse implements Serializable {
+}
+
+public class CombineDTO {
+
+    /**
+     * 接口的输入配置
+     */
+    private Input input;
+
+    /**
+     * 接口的输出配置
+     */
+    private Output output;
+
+    /**
+     * API的invoker
+     */
+    private List<Request> requests;
+}
+
+
+import lombok.Data;
+
+import java.util.List;
+
+@Data
+public class Field {
+
+    /**
+     * 字段名称，会作为请求参数和响应参数中的key
+     */
+    private String name;
+
+    /**
+     * 是否必须
+     */
+    private boolean required;
+
+    /**
+     * 字段类型
+     */
+    private FieldType fieldType;
+
+    /**
+     * 值类型
+     */
+    private String valueType;
+
+    /**
+     * 取值表达式，由ValueParser处理
+     */
+    private String raw;
+
+    /**
+     * 当FieldType == Array时，会将children中定义的属性包装成一个[{key:value}]作为该字段的值
+     * 当FieldType == Object时，会将children中定义的属性包装成一个{key: value}作为该字段的值
+     */
+    private List<Field> children;
+}
+
+
+import com.fasterxml.jackson.annotation.JsonValue;
+
+public enum FieldType {
+
+    /**
+     * 直接取表达式的值，不做数据转换
+     */
+    ANYTHING("ANYTHING"),
+
+    /**
+     * 字符串类型
+     */
+    STRING("STRING"),
+
+    /**
+     * 数字类型，可带小数
+     */
+    NUMBER("NUMBER"),
+
+    /**
+     * 数组类型
+     */
+    ARRAY("ARRAY"),
+
+    /**
+     * 对象类型
+     */
+    OBJECT("OBJECT"),
+
+    /**
+     * boolean类型
+     */
+    BOOLEAN("BOOLEAN"),
+
+    /**
+     * 整数类型
+     */
+    INTEGER("INTEGER");
+
+    @JsonValue
+    private String name;
+
+    private FieldType(String name) {
+        this.name = name;
+    }
+}
+
+import lombok.Data;
+
+import java.util.List;
+
+@Data
+public class Input {
+    /**
+     * 输入的header定义，为null时，会将请求过来的所有header都放入
+     */
+    private List<Field> header;
+
+    /**
+     * 输入的query定义，为null时，会将请求过来的所有query放入
+     */
+    private List<Field> query;
+
+    /**
+     * 请求体定义，为null时，会将请求过来的所有body放入
+     */
+    private List<Field> body;
+}
+
+import lombok.Data;
+
+
+@Data
+public class Invoker {
+
+    /**
+     * invoker的唯一id
+     */
+
+    private String invokerId;
+
+    /**
+     * 输入配置
+     */
+    private Input input;
+
+    /**
+     * 输出配置
+     */
+    private Output output;
+}
+
+import lombok.Data;
+
+import java.util.List;
+
+@Data
+public class Output {
+    /**
+     * 响应头定义
+     */
+    private List<Field> header;
+
+    /**
+     * 响应体定义
+     */
+    private List<Field> body;
+}
+
+
+import lombok.Data;
+
+import java.util.List;
+
+@Data
+public class Request {
+    /**
+     * 本次请求的唯一ID
+     */
+    private String requestId;
+
+    /**
+     * 请求的invoker集合
+     */
+    private List<Invoker> invokers;
+}
+
+
+import com.example.weaponxxx.dto.CDTORequest;
+import com.example.weaponxxx.dto.CDTOResponse;
+
+public interface InterfaceC {
+    CDTOResponse method(CDTORequest request);
+}
+
+import com.example.weaponxxx.dto.BDTORequest;
+import com.example.weaponxxx.dto.BDTOResponse;
+
+public interface InterfaceB {
+    BDTOResponse method(BDTORequest request);
+}
+
+import com.example.weaponxxx.dto.ADTORequest;
+import com.example.weaponxxx.dto.ADTOResponse;
+
+public interface InterfaceA {
+    ADTOResponse method(ADTORequest request);
+}
+
+@Service
+public class CSvc implements InterfaceC {
+
+    @Override
+    public CDTOResponse method(CDTORequest request) {
+        return null;
+    }
+}
+@Service
+public class CombineSvc {
+
+    public void method(String dsl, String paramJson) {
+        System.out.println("CombineSvc.method");
+    }
+}
+@Service
+public class BSvc implements InterfaceB {
+
+    @Override
+    public BDTOResponse method(BDTORequest request) {
+        return null;
+    }
+}
+@Service
+public class ASvc implements InterfaceA {
+    @Override
+    public ADTOResponse method(ADTORequest request) {
+        return null;
+    }
+}
+
+
